@@ -5,11 +5,12 @@ on:
     branches-ignore:
       - master
   workflow_call:
-    tf-action-working-dir:
-      description: 'Diretório do terraform no repositório'
-      default: '.'
-      required: false
-      type: string
+    inputs:
+      tf-action-working-dir:
+        description: 'Diretório do terraform no repositório'
+        default: '.'
+        required: false
+        type: string
 
 jobs:
   terraform-setup:
