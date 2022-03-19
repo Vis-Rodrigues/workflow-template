@@ -5,6 +5,12 @@ on:
     branches-ignore:
       - master
   workflow_call:
+    inputs:
+      tf-action-working-dir:
+        description: 'Diretório do terraform no repositório'
+        default: '.'
+        required: false
+        type: string
     secrets:  
       aws-region:
         description: 'AWS Region'
@@ -21,7 +27,7 @@ jobs:
     name: Verify terraform changes
     runs-on: ubuntu-latest
     steps:
-    
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -29,6 +35,11 @@ jobs:
           aws-access-key-id: ${{ secrets.aws-access-key-id }}
           aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
       
+      - name: Terraform Init
+        run: terraform init
+        env:
+          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
+
       - name: Terraform Validate
         run: terraform validate 
 

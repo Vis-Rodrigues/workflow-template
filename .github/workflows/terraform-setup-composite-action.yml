@@ -5,22 +5,6 @@ on:
     branches-ignore:
       - master
   workflow_call:
-    inputs:
-      tf-action-working-dir:
-        description: 'Diretório do terraform no repositório'
-        default: '.'
-        required: false
-        type: string
-    secrets:  
-      aws-region:
-        description: 'AWS Region'
-        required: true
-      aws-access-key-id:
-        description: 'AWS Key ID'
-        required: true
-      aws-secret-access-key:
-        description: 'AWS Secret Access Key'
-        required: true
 
 jobs:
   terraform-setup:
@@ -33,15 +17,3 @@ jobs:
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ${{ secrets.aws-region }}
-          aws-access-key-id: ${{ secrets.aws-access-key-id }}
-          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-
-      - name: Terraform Init
-        run: terraform init
-        env:
-          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
