@@ -50,13 +50,15 @@ jobs:
         run: terraform validate 
 
       - name: Terraform Plan
-        run: terraform plan
+        run: |
+          terraform plan \
+          && terraform output > output-plan
         env:
           TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
 
-      # - name: Upload Output Plan
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: output-plan
-      #     path: output-plan
-      #     retention-days: 1
+      - name: Upload Output Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-plan
+          path: output-plan
+          retention-days: 1
