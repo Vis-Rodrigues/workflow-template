@@ -42,4 +42,4 @@ jobs:
       - name: Terraform Init
         run: terraform init
         env:
-          TF_ACTION_WORKING_DIR: ${{ tf-action-working-dir }}
+          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
