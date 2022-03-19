@@ -56,6 +56,12 @@ jobs:
         env:
           TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
 
+      - name: Terraform Apply
+        if: github.ref_name == 'main' || github.ref_name == 'master'
+        run: terraform apply -auto-approve -input=false
+        env:
+          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
+
       - name: Verificar existe output.tf 
         id: check_output_file
         uses: andstor/file-existence-action@v1
