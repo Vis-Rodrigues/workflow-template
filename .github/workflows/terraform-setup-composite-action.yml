@@ -5,20 +5,19 @@ on:
     branches-ignore:
       - master
   workflow_call:
-
-inputs:
-  aws-region:
-    description: 'AWS Region'
-    default: 'us-east-1'
-  aws-access-key-id:
-    description: 'AWS Key ID'
-    required: true
-  aws-secret-access-key:
-    description: 'AWS Secret Access Key'
-    required: true
-  tf-action-working-dir:
-    description: 'Diretório do terraform no repositório'
-    default: '.'
+    inputs:
+      aws-region:
+        description: 'AWS Region'
+        default: 'us-east-1'
+      aws-access-key-id:
+        description: 'AWS Key ID'
+        required: true
+      aws-secret-access-key:
+        description: 'AWS Secret Access Key'
+        required: true
+      tf-action-working-dir:
+        description: 'Diretório do terraform no repositório'
+        default: '.'
 
 jobs:
   terraform-setup:
