@@ -6,6 +6,20 @@ on:
       - master
   workflow_call:
 
+inputs:
+  aws-region:
+    description: 'AWS Region'
+    default: 'us-east-1'
+  aws-access-key-id:
+    description: 'AWS Key ID'
+    required: true
+  aws-secret-access-key:
+    description: 'AWS Secret Access Key'
+    required: true
+  tf-action-working-dir:
+    description: 'Diretório do terraform no repositório'
+    default: '.'
+
 jobs:
   terraform-setup:
     name: Setup terraform
@@ -21,11 +35,11 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ inputs.aws-region }}
+          aws-access-key-id: ${{ inputs.aws-access-key-id }}
+          aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
 
       - name: Terraform Init
         run: terraform init
         env:
-          TF_ACTION_WORKING_DIR: '.'
+          TF_ACTION_WORKING_DIR: ${{ tf-action-working-dir }}
