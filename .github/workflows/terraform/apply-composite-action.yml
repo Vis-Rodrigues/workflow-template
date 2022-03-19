@@ -1,0 +1,28 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - master
+  workflow_call:
+
+jobs:
+
+  terraform-apply:
+    name: Terraform apply
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Terraform Plan
+        run: |
+          terraform plan \
+          && terraform output > outputs-plan
+        env:
+          TF_ACTION_WORKING_DIR: '.'
+
+      - name: Upload Output Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-plan
+          path: output-plan
+          retention-days: 1
