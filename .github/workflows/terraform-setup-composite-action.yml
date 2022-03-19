@@ -9,6 +9,8 @@ on:
       tf-action-working-dir:
         description: 'Diretório do terraform no repositório'
         default: '.'
+        required: false
+        type: string
     secrets:  
       aws-region:
         description: 'AWS Region'
