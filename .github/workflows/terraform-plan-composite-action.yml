@@ -23,9 +23,26 @@ on:
         required: true
 jobs:
 
+  terraform-setup:
+    name: Setup terraform
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1
+      
+      - name: Terraform Init
+        run: terraform init
+        env:
+          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
+
   terraform-plan:
     name: Verify terraform changes
     runs-on: ubuntu-latest
+    needs: terraform-setup
     steps:
       
       - name: Checkout Repo
