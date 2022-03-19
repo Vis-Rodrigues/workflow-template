@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+
   workflow_call:
     inputs:
       tf-action-working-dir:
@@ -11,16 +12,7 @@ on:
         default: '.'
         required: false
         type: string
-    secrets:  
-      aws-region:
-        description: 'AWS Region'
-        required: true
-      aws-access-key-id:
-        description: 'AWS Key ID'
-        required: true
-      aws-secret-access-key:
-        description: 'AWS Secret Access Key'
-        required: true
+
 jobs:
 
   terraform-apply:
@@ -28,40 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v1
-      
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ${{ secrets.aws-region }}
-          aws-access-key-id: ${{ secrets.aws-access-key-id }}
-          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-      
-      - name: Terraform Init
-        run: terraform init
-        env:
-          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
-      
-      - name: Terraform Validate
-        run: terraform validate 
-
-      - name: Terraform Plan
-        run: |
-          terraform plan -out=tfvar \
-          && terraform output > outputs-plan
-        env:
-          TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
-
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false
+        if: github.ref_name == 'main' || github.ref_name == 'master'
+        run: |
+          terraform apply -auto-approve -input=false \
+          && terraform output > outputs-apply
         env:
           TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
 
-      - name: Verificar existe output.tf 
+      - name: Verificar existe outputs.tf 
         id: check_output_file
         uses: andstor/file-existence-action@v1
         with:
@@ -71,6 +38,6 @@ jobs:
         uses: actions/upload-artifact@v3
         if: steps.check_output_file.outputs.files_exists == 'true'
         with:
-          name: outputs-plan
-          path: outputs-plan
+          name: outputs-apply
+          path: outputs-apply
           retention-days: 1

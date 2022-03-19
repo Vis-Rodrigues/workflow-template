@@ -2,8 +2,6 @@ name: Terraform Plan
 
 on:
   push:
-    branches-ignore:
-      - master
   workflow_call:
     inputs:
       tf-action-working-dir:
@@ -62,7 +60,7 @@ jobs:
         env:
           TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
 
-      - name: Verificar existe output.tf 
+      - name: Verificar existe outputs.tf 
         id: check_output_file
         uses: andstor/file-existence-action@v1
         with:
