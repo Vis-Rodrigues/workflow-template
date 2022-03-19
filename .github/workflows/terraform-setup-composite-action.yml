@@ -9,10 +9,10 @@ on:
       tf-action-working-dir:
         description: 'Diretório do terraform no repositório'
         default: '.'
+    secrets:  
       aws-region:
         description: 'AWS Region'
-        default: 'us-east-1'
-    secrets:  
+        required: true
       aws-access-key-id:
         description: 'AWS Key ID'
         required: true
@@ -35,7 +35,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: ${{ inputs.aws-region }}
+          aws-region: ${{ secrets.aws-region }}
           aws-access-key-id: ${{ secrets.aws-access-key-id }}
           aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
 
