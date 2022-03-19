@@ -5,7 +5,16 @@ on:
     branches-ignore:
       - master
   workflow_call:
-
+    secrets:  
+      aws-region:
+        description: 'AWS Region'
+        required: true
+      aws-access-key-id:
+        description: 'AWS Key ID'
+        required: true
+      aws-secret-access-key:
+        description: 'AWS Secret Access Key'
+        required: true
 jobs:
 
   terraform-plan:
