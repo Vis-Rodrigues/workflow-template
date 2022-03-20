@@ -1,0 +1,35 @@
+name: React Build
+
+on:
+  push:
+  workflow_call:
+
+jobs:
+  react-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.aws-region }}
+          aws-access-key-id: ${{ secrets.aws-access-key-id }}
+          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+      
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      
+      - name: Build React App
+        run: npm install && CI=false npm run build
+      
+      - name: Upload build directory
+        uses: actions/upload-artifact@v3
+        with:
+          name: /build/
+          path: /build/
+          retention-days: 1

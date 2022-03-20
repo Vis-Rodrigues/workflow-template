@@ -1,7 +1,9 @@
-name: build-react-s3-deploy
+name: react-s3-deploy
 
 on:
   push:
+    branches:
+      - master
   workflow_call:
     inputs:
       s3-bucket-name:
@@ -31,24 +33,12 @@ jobs:
           aws-region: ${{ secrets.aws-region }}
           aws-access-key-id: ${{ secrets.aws-access-key-id }}
           aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-      
-      - uses: actions/cache@v2
+ 
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.0
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      
-      - name: Build React App
-        run: npm install && CI=false npm run build
-      
-      - name: Upload build directory
-        uses: actions/upload-artifact@v3
-        with:
-          name: /build/
-          path: /build/
-          retention-days: 1
+          name: /build
+          path: /build
 
       - name: Deploy app build to S3 bucket AWS
-        if: github.ref_name == 'main' || github.ref_name == 'master'
         run: aws s3 sync ./build/ s3://${{ inputs.s3-bucket-name }} --delete
