@@ -37,8 +37,14 @@ jobs:
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.0
         with:
-          name: /build
-          path: /build
+          name: build
+          path: build
+
+      - name: Lista de arquivos
+        run: ls -l
+        with:
+          name: build
+          path: build
 
       - name: Deploy app build to S3 bucket AWS
         run: aws s3 sync ./build/ s3://${{ inputs.s3-bucket-name }} --delete
