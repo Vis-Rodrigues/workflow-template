@@ -40,8 +40,5 @@ jobs:
           name: build
           path: build
 
-      - name: Lista de arquivos
-        run: ls -l
-
       - name: Deploy app build to S3 bucket AWS
         run: aws s3 sync ./build/ s3://${{ inputs.s3-bucket-name }} --delete
