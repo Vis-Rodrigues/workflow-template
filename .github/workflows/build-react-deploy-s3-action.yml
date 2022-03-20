@@ -1,4 +1,4 @@
-name: s3-deploy
+name: build-react-s3-deploy
 
 on:
   push:
