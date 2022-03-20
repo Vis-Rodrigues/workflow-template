@@ -1,4 +1,4 @@
-name: Terraform Plan
+name: Terraform
 
 on:
   push:
@@ -21,8 +21,8 @@ on:
         required: true
 jobs:
 
-  terraform-plan:
-    name: Setup e Plan terraform
+  terraform:
+    name: Terraform Setup Plan e Apply
     runs-on: ubuntu-latest
     steps:
 

@@ -1,0 +1,40 @@
+name: s3-deploy
+
+on:
+  push:
+  workflow_call:
+    inputs:
+      s3-bucket-name:
+        description: 'Nome do bucket'
+        required: true
+        type: string
+    secrets:
+      aws-region:
+        description: 'AWS Region'
+        required: true
+      aws-access-key-id:
+        description: 'AWS Key ID'
+        required: true
+      aws-secret-access-key:
+        description: 'AWS Secret Access Key'
+        required: true
+
+jobs:
+  react-deploy-s3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.aws-region }}
+          aws-access-key-id: ${{ secrets.aws-access-key-id }}
+          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+      
+      - name: Build React App
+        run: npm install && npm run build
+      
+      - name: Deploy app build to S3 bucket AWS
+        if: github.ref_name == 'main' || github.ref_name == 'master'
+        run: aws s3 sync ./build/ s3://${{ inputs.s3-bucket-name }} --delete
