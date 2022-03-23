@@ -56,20 +56,24 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref_name == 'main' || github.ref_name == 'master'
-        run: terraform apply -auto-approve -input=false
+        run: |
+          terraform apply -auto-approve -input=false \
+          && terraform output > outputs-apply
         env:
           TF_ACTION_WORKING_DIR: ${{ inputs.tf-action-working-dir }}
 
-      - name: Verificar existe outputs.tf 
+      - name: Verificar existe outputs-plan e outputs-apply
         id: check_output_file
         uses: andstor/file-existence-action@v1
         with:
-          files: "outputs.tf"
+          files: "outputs-plan, outputs-apply"
 
       - name: Upload Output Plan
         uses: actions/upload-artifact@v3
         if: steps.check_output_file.outputs.files_exists == 'true'
         with:
-          name: outputs-plan
-          path: outputs-plan
+          name: outputs
+          path: |
+            outputs-plan
+            outputs-apply
           retention-days: 1
