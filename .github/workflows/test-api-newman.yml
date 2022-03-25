@@ -41,6 +41,7 @@ jobs:
        npm install -g newman-reporter-htmlextra
 
     - name: Testes com Newman
+      continue-on-error: true
       run: |
        mkdir -p resultado
        newman run ${{ inputs.collection }}.json -e ${{ inputs.environment }}.json -r cli, htmlextra --reporter-htmlextra-export resultado/report.html ${{ inputs.extra_options }}
