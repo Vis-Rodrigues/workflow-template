@@ -23,7 +23,7 @@ jobs:
           path: ${{ inputs.artifact_download }}
 
       - name: ls repositorio
-        run: ls
+        run: ls && cd report && ls
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
