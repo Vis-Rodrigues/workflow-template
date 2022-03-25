@@ -14,6 +14,10 @@ on:
         description: 'Opções extra para execução do teste'
         required: false
         type: string
+      artifact_name:
+        description: 'Nome do artefato para upload'
+        required: true
+        type: string
 jobs:
   test-api:
     runs-on: ubuntu-latest
@@ -34,13 +38,13 @@ jobs:
     - name: Testes com Newman
       continue-on-error: true
       run: |
-       mkdir -p resultado
-       newman run ${{ inputs.collection }}.json -e ${{ inputs.environment }}.json -r htmlextra --reporter-htmlextra-export resultado/report.html ${{ inputs.extra_options }}
+       mkdir -p report
+       newman run ${{ inputs.collection }}.json -e ${{ inputs.environment }}.json -r htmlextra --reporter-htmlextra-export report/report.html ${{ inputs.extra_options }}
 
     - name: Upload relatório da execucao dos testes
       uses: actions/upload-artifact@v3
       with: 
-       name: Report
-       path: resultado
+       name: ${{ inputs.artifact_name }}
+       path: report
        retention-days: 1
      
