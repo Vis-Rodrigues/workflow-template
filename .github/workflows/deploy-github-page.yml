@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 
-on: [push]
+on:
   workflow_call:
   inputs:
     publish_dir:
@@ -9,7 +9,7 @@ on: [push]
       type: string
 
 jobs:
-  deploy-github-page:
+  github-page:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
