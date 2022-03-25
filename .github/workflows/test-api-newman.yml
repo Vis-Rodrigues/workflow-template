@@ -3,6 +3,10 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - master
+
   workflow_call:
     inputs:
       collection:
@@ -46,7 +50,7 @@ jobs:
     - name: Testes com Newman
       run: |
        mkdir -p resultado
-       newman run ${{ input.collection }}.json -e ${{ input.environment }}.json -r cli, htmlextra --reporter-htmlextra-export resultado/report.html ${{ input.extra_options }}
+       newman run ${{ inputs.collection }}.json -e ${{ inputs.environment }}.json -r cli, htmlextra --reporter-htmlextra-export resultado/report.html ${{ inputs.extra_options }}
 
     - name: Upload relatório da execucao dos testes
       uses: actions/upload-artifact@v3
