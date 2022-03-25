@@ -4,11 +4,11 @@ on:
     inputs:
       collection:
         description: 'Nome da coleção'
-        required: false
+        required: true
         type: string
       environment:
         description: 'Nome da environment'
-        required: false
+        required: true
         type: string
       extra_options:
         description: 'Opções extra para execução do teste'
