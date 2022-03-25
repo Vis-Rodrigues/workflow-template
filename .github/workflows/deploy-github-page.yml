@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   workflow_call:
     inputs:
-      artifact_path:
+      artifact_download:
         description: 'Diretorio artefato para publicar'
         required: true
         type: string
@@ -19,8 +19,8 @@ jobs:
       - name: Download a Artifact
         uses: actions/download-artifact@v3.0.0
         with:
-          name: page
-          path: ${{ inputs.artifact_path }}
+          name: ${{ inputs.artifact_download }}
+          path: ${{ inputs.artifact_download }}
 
       - name: ls repositorio
         run: ls
