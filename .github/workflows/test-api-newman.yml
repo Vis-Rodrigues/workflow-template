@@ -1,11 +1,5 @@
 name: Testes Integrados de API com Newman
-on:
-  pull_request:
-    branches:
-      - master
-  push:
-    branches:
-      - master
+on: [push, pull_request]
   workflow_call:
     inputs:
       collection:
