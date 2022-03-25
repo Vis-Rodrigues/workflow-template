@@ -2,11 +2,11 @@ name: Deploy to GitHub Pages
 
 on:
   workflow_call:
-  inputs:
-    publish_dir:
-      description: 'Diretorio arquivo para publicar'
-      required: true
-      type: string
+    inputs:
+      publish_dir:
+        description: 'Diretorio arquivo para publicar'
+        required: true
+        type: string
 
 jobs:
   github-page:
