@@ -1,0 +1,57 @@
+name: Testes Integrados de API com Newman
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_call:
+    inputs:
+      collection:
+        description: 'Nome da coleção'
+        required: true
+        type: string
+      environment:
+        description: 'Nome da environment'
+        required: true
+        type: string
+      extra_options:
+        description: 'Opções extra para execução do teste'
+        required: false
+        type: string
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+      
+    - name: Cache node
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Instalar node
+      uses: actions/setup-node@v1
+      with: 
+        node-version: '12.x'
+    
+    - name: Instalar newman
+      run: |
+       npm install -g newman
+       npm install -g newman-reporter-htmlextra
+
+    - name: Testes com Newman
+      run: |
+       mkdir -p resultado
+       newman run ${{ input.collection }}.json -e ${{ input.environment }}.json -r htmlextra --reporter-htmlextra-export resultado/report.html ${{ input.extra_options }}
+
+    - name: Upload relatório da execucao dos testes
+      uses: actions/upload-artifact@v3
+      with: 
+       name: Report
+       path: resultado
+       retention-days: 1
+     
