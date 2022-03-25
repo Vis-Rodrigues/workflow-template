@@ -39,7 +39,7 @@ jobs:
       continue-on-error: true
       run: |
        mkdir -p report
-       newman run ${{ inputs.collection }}.json -e ${{ inputs.environment }}.json -r htmlextra --reporter-htmlextra-export report/report.html ${{ inputs.extra_options }}
+       newman run ${{ inputs.collection }}.json -e ${{ inputs.environment }}.json -r htmlextra --reporter-htmlextra-export report/index.html ${{ inputs.extra_options }}
 
     - name: Upload relatório da execucao dos testes
       uses: actions/upload-artifact@v3
