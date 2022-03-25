@@ -1,0 +1,25 @@
+name: Deploy to GitHub Pages
+
+on: [push]
+  workflow_call:
+  inputs:
+    publish_dir:
+      description: 'Diretorio arquivo para publicar'
+      required: true
+      type: string
+
+jobs:
+  deploy-github-page:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: ls repositorio
+        run: ls
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ inputs.publish_dir }}
