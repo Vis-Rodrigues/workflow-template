@@ -1,5 +1,5 @@
 name: Testes Integrados de API com Newman
-on: [push, pull_request]
+on: [push]
   workflow_call:
     inputs:
       collection:
